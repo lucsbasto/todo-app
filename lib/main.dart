@@ -29,12 +29,26 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            "Monday",
-            style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+          Padding(
+            padding: const EdgeInsets.only(left: 24.0, top: 50.0, bottom: 8.0),
+            child: Text(
+              "Monday",
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+            ),
           ),
-          _button(context)
+          Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: _button(context),
+          ),
+          _tasksUncomplete("Call tom about appointment"),
+          _tasksUncomplete("Edit API documentation"),
+          _tasksUncomplete("Fix on boarding experience"),
+          Divider(),
+          _tasksComplete("Fix on boarding experience"),
+          _tasksComplete("Call tom about appointment"),
+          _tasksComplete("Edit API documentation"),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -58,6 +72,44 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _tasksUncomplete(String task) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20.0, bottom: 24.0),
+      child: Row(
+        children: <Widget>[
+          Icon(
+            Icons.radio_button_unchecked,
+            color: Theme.of(context).accentColor,
+            size: 30,
+          ),
+          SizedBox(
+            width: 24,
+          ),
+          Text(task),
+        ],
+      ),
+    );
+  }
+
+  Widget _tasksComplete(String task) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20.0, bottom: 24.0),
+      child: Row(
+        children: <Widget>[
+          Icon(
+            Icons.radio_button_checked,
+            color: Theme.of(context).accentColor,
+            size: 30,
+          ),
+          SizedBox(
+            width: 24,
+          ),
+          Text(task),
+        ],
       ),
     );
   }
