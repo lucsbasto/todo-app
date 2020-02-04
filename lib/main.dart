@@ -28,27 +28,16 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: Stack(
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(left: 24.0, top: 50.0, bottom: 8.0),
+          _mainContent(context),
+          Positioned(
+            right: 0,
             child: Text(
-              "Monday",
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+              "6",
+              style: TextStyle(fontSize: 200, color: Color(0x10000000)),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: _button(context),
-          ),
-          _tasksUncomplete("Call tom about appointment"),
-          _tasksUncomplete("Edit API documentation"),
-          _tasksUncomplete("Fix on boarding experience"),
-          Divider(),
-          _tasksComplete("Fix on boarding experience"),
-          _tasksComplete("Call tom about appointment"),
-          _tasksComplete("Edit API documentation"),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -73,6 +62,32 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+    );
+  }
+
+  Column _mainContent(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(left: 24, top: 70, bottom: 50),
+          child: Text(
+            "Monday",
+            style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: _button(context),
+        ),
+        _tasksUncomplete("Call tom about appointment"),
+        _tasksUncomplete("Edit API documentation"),
+        _tasksUncomplete("Fix on boarding experience"),
+        Divider(),
+        SizedBox(height: 16),
+        _tasksComplete("Have coffee with Sam"),
+        _tasksComplete("Clean my bedroom"),
+      ],
     );
   }
 
