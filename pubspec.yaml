@@ -43,7 +43,10 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-
+  fonts:
+    - family: Montserrat     
+      fonts:
+        - asset: assets/fonts/Montserrat-Regular.ttf
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg
@@ -61,9 +64,9 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   # fonts:
-    - family: Montserrat
-      fonts:
-        - asset: fonts/assets/fonts/Montserrat-Regular.ttf
+  #   - family: Montserrat     
+  #     fonts:
+  #       - asset: assets/fonts/Montserrat-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
