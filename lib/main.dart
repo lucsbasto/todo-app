@@ -8,7 +8,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.red,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -28,12 +28,69 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text("Hello")),
+      body: Column(
+        children: <Widget>[
+          Text(
+            "Monday",
+            style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+          ),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: MaterialButton(
+                  onPressed: () {},
+                  child: Text('Tasks'),
+                  color: Theme.of(context).accentColor,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Theme.of(context).accentColor),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding: EdgeInsets.all(14.0),
+                  textColor: Colors.white,
+                ),
+              ),
+              SizedBox(
+                width: 32,
+              ),
+              Expanded(
+                child: MaterialButton(
+                  onPressed: () {},
+                  child: Text('Events'),
+                  padding: EdgeInsets.all(14.0),
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Theme.of(context).accentColor),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  textColor: Theme.of(context).accentColor,
+                  color: Colors.white,
+                ),
+              )
+            ],
+          )
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         tooltip: 'Increment',
         child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.settings),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: Icon(Icons.more_vert),
+              onPressed: () {},
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
