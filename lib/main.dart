@@ -6,6 +6,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.red, fontFamily: "Montserrat"),
       home: MyHomePage(),
@@ -81,8 +82,9 @@ class _MyHomePageState extends State<MyHomePage> {
         _tasksUncomplete("Call tom about appointment"),
         _tasksUncomplete("Edit API documentation"),
         _tasksUncomplete("Fix on boarding experience"),
-        Divider(),
-        SizedBox(height: 16),
+        Divider(
+          height: 1,
+        ),
         _tasksComplete("Have coffee with Sam"),
         _tasksComplete("Clean my bedroom"),
       ],
@@ -109,20 +111,23 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _tasksComplete(String task) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 20.0, bottom: 24.0),
-      child: Row(
-        children: <Widget>[
-          Icon(
-            Icons.radio_button_checked,
-            color: Theme.of(context).accentColor,
-            size: 30,
-          ),
-          SizedBox(
-            width: 24,
-          ),
-          Text(task),
-        ],
+    return Container(
+      foregroundDecoration: BoxDecoration(color: Color(0x60fdfdfd)),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 20.0, top: 24.0),
+        child: Row(
+          children: <Widget>[
+            Icon(
+              Icons.radio_button_checked,
+              color: Theme.of(context).accentColor,
+              size: 30,
+            ),
+            SizedBox(
+              width: 24,
+            ),
+            Text(task),
+          ],
+        ),
       ),
     );
   }
