@@ -6,10 +6,29 @@ class EventPage extends StatefulWidget {
   _EventPageState createState() => _EventPageState();
 }
 
+class Event {
+  final String time;
+  final String task;
+  final String description;
+  final bool isFinish;
+
+  const Event(this.time, this.task, this.description, this.isFinish);
+}
+
+final List<Event> _event_list = [
+  new Event("08:00", "Have coffee with Sam", "Personal", false),
+  new Event("09:00", "Meet with sales", "Personal", true),
+  new Event("10:00", "Call about the appointment", "Personal", false),
+  new Event("11:00", "Fix onboarding experience", "Personal", false),
+  new Event("12:00", "Edit API documentation", "Personal", true),
+  new Event("13:00", "Setup user focus group", "Personal", false),
+];
+
 class _EventPageState extends State<EventPage> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      itemCount: _event_list.length,
       padding: const EdgeInsets.all(0),
       itemBuilder: (context, index) {
         double iconSize = 20;
@@ -19,8 +38,8 @@ class _EventPageState extends State<EventPage> {
               decoration: IconDecoration(
                 iconSize: iconSize,
                 lineWidth: 1,
-                firstData: false,
-                lastData: false,
+                firstData: index == 0 ?? false,
+                lastData: index == _event_list.length - 1 ?? false,
               ),
               child: Container(
                 decoration: BoxDecoration(
@@ -31,13 +50,17 @@ class _EventPageState extends State<EventPage> {
                           color: Color(0x20000000),
                           blurRadius: 5),
                     ]),
-                child: Icon(Icons.fiber_manual_record,
-                    size: 20, color: Theme.of(context).accentColor),
+                child: Icon(
+                    _event_list[index].isFinish
+                        ? Icons.fiber_manual_record
+                        : Icons.radio_button_unchecked,
+                    size: 20,
+                    color: Theme.of(context).accentColor),
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
-              child: Container(width: 80, child: Text("8:00")),
+              child: Container(width: 80, child: Text(_event_list[index].time)),
             ),
             Expanded(
               child: Padding(
@@ -57,11 +80,11 @@ class _EventPageState extends State<EventPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text("Coffee with Sam"),
+                      Text(_event_list[index].task),
                       SizedBox(
                         height: 12,
                       ),
-                      Text("Personal")
+                      Text(_event_list[index].description)
                     ],
                   ),
                 ),

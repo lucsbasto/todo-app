@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/pages/event_page.dart';
 import 'package:todo_app/pages/task_page.dart';
-import 'package:todo_app/pages/event_page.dart';
 
 void main() => runApp(MyApp());
 
