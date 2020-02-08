@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_app/widgets/custom_icon_decoration.dart';
 
 class EventPage extends StatefulWidget {
   @override
@@ -37,130 +38,79 @@ class _EventPageState extends State<EventPage> {
           padding: const EdgeInsets.only(left: 24.0, right: 24.0),
           child: Row(
             children: <Widget>[
-              Container(
-                decoration: IconDecoration(
-                  iconSize: iconSize,
-                  lineWidth: 1,
-                  firstData: index == 0 ?? false,
-                  lastData: index == _event_list.length - 1 ?? false,
-                ),
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
-                      boxShadow: [
-                        BoxShadow(
-                            offset: Offset(0, 3),
-                            color: Color(0x20000000),
-                            blurRadius: 5),
-                      ]),
-                  child: Icon(
-                      _event_list[index].isFinish
-                          ? Icons.fiber_manual_record
-                          : Icons.radio_button_unchecked,
-                      size: 20,
-                      color: Theme.of(context).accentColor),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child:
-                    Container(width: 80, child: Text(_event_list[index].time)),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
-                  child: Container(
-                    padding: const EdgeInsets.all(14.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Color(0x20000000),
-                            blurRadius: 5,
-                            offset: Offset(0, 3))
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(_event_list[index].task),
-                        SizedBox(
-                          height: 12,
-                        ),
-                        Text(_event_list[index].description)
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+              _lineStyle(context, iconSize, index, _event_list.length,
+                  _event_list[index].isFinish),
+              _displayTime(_event_list[index].time),
+              _displayContent(_event_list[index]),
             ],
           ),
         );
       },
     );
   }
-}
 
-class IconDecoration extends Decoration {
-  final double iconSize;
-  final double lineWidth;
-  final bool firstData;
-  final bool lastData;
-
-  IconDecoration({
-    @required double iconSize,
-    @required double lineWidth,
-    @required bool firstData,
-    @required bool lastData,
-  })  : this.iconSize = iconSize,
-        this.lineWidth = lineWidth,
-        this.firstData = firstData,
-        this.lastData = lastData;
-
-  @override
-  BoxPainter createBoxPainter([onChanged]) {
-    return IconLine(
-        iconSize: iconSize,
-        lineWidth: lineWidth,
-        firstData: firstData,
-        lastData: lastData);
+  Expanded _displayContent(Event event) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
+        child: Container(
+          padding: const EdgeInsets.all(14.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(12)),
+            boxShadow: [
+              BoxShadow(
+                  color: Color(0x20000000), blurRadius: 5, offset: Offset(0, 3))
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(event.task),
+              SizedBox(
+                height: 12,
+              ),
+              Text(event.description)
+            ],
+          ),
+        ),
+      ),
+    );
   }
-}
 
-class IconLine extends BoxPainter {
-  final double iconSize;
-  final bool firstData;
-  final bool lastData;
+  Container _displayTime(String time) {
+    return Container(
+      width: 80,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 8.0),
+        child: Container(child: Text(time)),
+      ),
+    );
+  }
 
-  final Paint paintLine;
-
-  IconLine({
-    @required double iconSize,
-    @required double lineWidth,
-    @required bool firstData,
-    @required bool lastData,
-  })  : this.iconSize = iconSize,
-        this.firstData = firstData,
-        this.lastData = lastData,
-        paintLine = Paint()
-          ..color = Colors.red
-          ..strokeCap = StrokeCap.round
-          ..strokeWidth = lineWidth
-          ..style = PaintingStyle.stroke;
-
-  @override
-  void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
-    final leftOffSet = Offset((iconSize / 2) + 24, offset.dy);
-    final double iconSpace = iconSize / 1.5;
-    final Offset top = configuration.size.topLeft(Offset(leftOffSet.dx, 0.0));
-    final Offset centerTop = configuration.size
-        .centerLeft(Offset(leftOffSet.dx, leftOffSet.dy - iconSpace));
-    final Offset centerBottom = configuration.size
-        .centerLeft(Offset(leftOffSet.dx, leftOffSet.dy + iconSpace));
-    final Offset end =
-        configuration.size.bottomLeft(Offset(leftOffSet.dx, leftOffSet.dy * 2));
-    if (!firstData) canvas.drawLine(top, centerTop, paintLine);
-    if (!lastData) canvas.drawLine(centerBottom, end, paintLine);
+  Container _lineStyle(BuildContext context, double iconSize, int index,
+      int listLength, bool isFinish) {
+    return Container(
+      decoration: CustomIconDecoration(
+        iconSize: iconSize,
+        lineWidth: 1,
+        firstData: index == 0 ?? false,
+        lastData: index == listLength - 1 ?? false,
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(50)),
+            boxShadow: [
+              BoxShadow(
+                  offset: Offset(0, 3),
+                  color: Color(0x20000000),
+                  blurRadius: 5),
+            ]),
+        child: Icon(
+            isFinish ? Icons.fiber_manual_record : Icons.radio_button_unchecked,
+            size: 20,
+            color: Theme.of(context).accentColor),
+      ),
+    );
   }
 }

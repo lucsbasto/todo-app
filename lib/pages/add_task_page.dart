@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/widgets/custom_button.dart';
+import 'package:todo_app/widgets/custom_date_time_picker.dart';
+import 'package:todo_app/widgets/custom_modal_action_button.dart';
 import 'package:todo_app/widgets/custom_textfield.dart';
 
 class AddTaskPage extends StatefulWidget {
@@ -8,6 +10,29 @@ class AddTaskPage extends StatefulWidget {
 }
 
 class _AddTaskPageState extends State<AddTaskPage> {
+  String _selectedDate = 'pick date';
+  String _selectedTime = 'pick time';
+  Future _pickDate() async {
+    DateTime datepick = await showDatePicker(
+      context: context,
+      initialDate: new DateTime.now(),
+      firstDate: new DateTime.now().add(Duration(days: -365)),
+      lastDate: new DateTime.now().add(Duration(days: 365)),
+    );
+    if (datepick != null) setState(() => _selectedDate = datepick.toString());
+  }
+
+  Future _pickTime() async {
+    TimeOfDay timepick = await showTimePicker(
+      context: context,
+      initialTime: new TimeOfDay.now(),
+    );
+    if (timepick != null)
+      setState(() {
+        _selectedTime = timepick.toString();
+      });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -26,33 +51,44 @@ class _AddTaskPageState extends State<AddTaskPage> {
           ),
           CustomTextField(labelText: "Enter task name"),
           SizedBox(
+            height: 12,
+          ),
+          CustomDateTimePicker(
+              icon: Icons.date_range,
+              onPressed: _pickDate,
+              value: _selectedDate),
+          CustomDateTimePicker(
+              icon: Icons.access_time,
+              onPressed: _pickTime,
+              value: _selectedTime),
+          SizedBox(
             height: 24,
           ),
-          _actionButton(context),
+          CustomModalActionButton(
+            onClose: () {
+              Navigator.of(context).pop();
+            },
+            onSave: () {},
+          ),
         ],
       ),
     );
   }
 
-  Row _actionButton(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        CustomButtom(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          buttonText: "Close",
-          color: Colors.white,
-          textColor: Theme.of(context).accentColor,
+  Widget _dateTimePicker(IconData icon, VoidCallback onPressed, String value) {
+    return FlatButton(
+      padding: EdgeInsets.zero,
+      onPressed: onPressed,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 12.0),
+        child: Row(
+          children: <Widget>[
+            Icon(icon, color: Theme.of(context).accentColor, size: 30),
+            SizedBox(width: 12),
+            Text(value, style: TextStyle(fontSize: 14)),
+          ],
         ),
-        CustomButtom(
-          onPressed: () {},
-          buttonText: "Save",
-          color: Theme.of(context).accentColor,
-          textColor: Colors.white,
-        )
-      ],
+      ),
     );
   }
 }

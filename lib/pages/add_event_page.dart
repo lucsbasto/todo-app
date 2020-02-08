@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/widgets/custom_button.dart';
+import 'package:todo_app/widgets/custom_modal_action_button.dart';
 import 'package:todo_app/widgets/custom_textfield.dart';
 
 class AddEventPage extends StatefulWidget {
@@ -60,7 +61,12 @@ class _AddEventPageState extends State<AddEventPage> {
           SizedBox(
             height: 24,
           ),
-          _actionButtom(context),
+          CustomModalActionButton(
+            onClose: () {
+              Navigator.of(context).pop();
+            },
+            onSave: () {},
+          ),
         ],
       ),
     );
@@ -80,28 +86,6 @@ class _AddEventPageState extends State<AddEventPage> {
           ],
         ),
       ),
-    );
-  }
-
-  Row _actionButtom(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        CustomButtom(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          textColor: Theme.of(context).accentColor,
-          buttonText: "Cancel",
-          color: Colors.white,
-        ),
-        CustomButtom(
-          onPressed: () {},
-          textColor: Colors.white,
-          color: Theme.of(context).accentColor,
-          buttonText: "Save",
-        )
-      ],
     );
   }
 }
