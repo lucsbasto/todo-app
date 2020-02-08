@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:todo_app/widgets/custom_button.dart';
 import 'package:todo_app/widgets/custom_date_time_picker.dart';
 import 'package:todo_app/widgets/custom_modal_action_button.dart';
 import 'package:todo_app/widgets/custom_textfield.dart';
@@ -56,23 +55,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
             onSave: () {},
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _dateTimePicker(IconData icon, VoidCallback onPressed, String value) {
-    return FlatButton(
-      padding: EdgeInsets.zero,
-      onPressed: onPressed,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 12.0),
-        child: Row(
-          children: <Widget>[
-            Icon(icon, color: Theme.of(context).accentColor, size: 30),
-            SizedBox(width: 12),
-            Text(value, style: TextStyle(fontSize: 14)),
-          ],
-        ),
       ),
     );
   }
