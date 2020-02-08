@@ -82,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Column _mainContent(BuildContext context) {
+  Widget _mainContent(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -97,7 +97,11 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: const EdgeInsets.all(24.0),
           child: _button(context),
         ),
-        Expanded(child: EventPage()),
+        Expanded(
+          child: PageView(
+            children: <Widget>[TaskPage(), EventPage()],
+          ),
+        ),
       ],
     );
   }
