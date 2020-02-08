@@ -120,10 +120,21 @@ class _MyHomePageState extends State<MyHomePage> {
       children: <Widget>[
         Expanded(
           child: CustomButtom(
-            onPressed: () {},
-            color: Theme.of(context).accentColor,
-            textColor: Colors.white,
             buttonText: 'Tasks',
+            onPressed: () {
+              _pageController.previousPage(
+                  duration: Duration(milliseconds: 500),
+                  curve: Curves.bounceIn);
+            },
+            color: currentPage >= 0.5
+                ? Theme.of(context).accentColor
+                : Colors.white,
+            textColor: currentPage >= 0.5
+                ? Colors.white
+                : Theme.of(context).accentColor,
+            borderColor: currentPage >= 0.5
+                ? Colors.transparent
+                : Theme.of(context).accentColor,
           ),
         ),
         SizedBox(
@@ -131,10 +142,21 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         Expanded(
           child: CustomButtom(
-            onPressed: () {},
-            color: Colors.white,
-            textColor: Theme.of(context).accentColor,
             buttonText: 'Events',
+            onPressed: () {
+              _pageController.nextPage(
+                  duration: Duration(milliseconds: 500),
+                  curve: Curves.bounceIn);
+            },
+            color: currentPage <= 0.5
+                ? Theme.of(context).accentColor
+                : Colors.white,
+            textColor: currentPage <= 0.5
+                ? Colors.white
+                : Theme.of(context).accentColor,
+            borderColor: currentPage <= 0.5
+                ? Colors.transparent
+                : Theme.of(context).accentColor,
           ),
         )
       ],
