@@ -29,8 +29,17 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  PageController _pageController = PageController();
+  double currentPage = 0;
+
   @override
   Widget build(BuildContext context) {
+    _pageController.addListener(() {
+      setState(() {
+        currentPage = _pageController.page;
+      });
+    });
+
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -47,14 +56,13 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showDialog(
+            barrierDismissible: false,
             context: context,
             builder: (BuildContext context) {
               return Dialog(
-                child: AddEventPage(),
+                child: currentPage == 0 ? AddTaskPage() : AddEventPage(),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(12),
-                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
                 ),
               );
             },
@@ -99,6 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         Expanded(
           child: PageView(
+            controller: _pageController,
             children: <Widget>[TaskPage(), EventPage()],
           ),
         ),
