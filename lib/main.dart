@@ -3,6 +3,7 @@ import 'package:todo_app/pages/add_event_page.dart';
 import 'package:todo_app/pages/add_task_page.dart';
 import 'package:todo_app/pages/event_page.dart';
 import 'package:todo_app/pages/task_page.dart';
+import 'package:todo_app/widgets/custom_button.dart';
 
 void main() => runApp(MyApp());
 
@@ -105,32 +106,22 @@ class _MyHomePageState extends State<MyHomePage> {
     return Row(
       children: <Widget>[
         Expanded(
-          child: MaterialButton(
+          child: CustomButtom(
             onPressed: () {},
-            child: Text('Tasks'),
             color: Theme.of(context).accentColor,
-            shape: RoundedRectangleBorder(
-              side: BorderSide(color: Theme.of(context).accentColor),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            padding: EdgeInsets.all(14.0),
             textColor: Colors.white,
+            buttonText: 'Tasks',
           ),
         ),
         SizedBox(
           width: 32,
         ),
         Expanded(
-          child: MaterialButton(
+          child: CustomButtom(
             onPressed: () {},
-            child: Text('Events'),
-            padding: EdgeInsets.all(14.0),
-            shape: RoundedRectangleBorder(
-              side: BorderSide(color: Theme.of(context).accentColor),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            textColor: Theme.of(context).accentColor,
             color: Colors.white,
+            textColor: Theme.of(context).accentColor,
+            buttonText: 'Events',
           ),
         )
       ],
