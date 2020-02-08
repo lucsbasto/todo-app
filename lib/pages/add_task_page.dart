@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/widgets/custom_button.dart';
+import 'package:todo_app/widgets/custom_textfield.dart';
 
 class AddTaskPage extends StatefulWidget {
   @override
@@ -22,17 +24,35 @@ class _AddTaskPageState extends State<AddTaskPage> {
           SizedBox(
             height: 24,
           ),
-          TextField(
-            decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(12),
-                  ),
-                ),
-                labelText: "Enter task name"),
+          CustomTextField(labelText: "Enter task name"),
+          SizedBox(
+            height: 24,
           ),
+          _actionButton(context),
         ],
       ),
+    );
+  }
+
+  Row _actionButton(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        CustomButtom(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          buttonText: "Close",
+          color: Colors.white,
+          textColor: Theme.of(context).accentColor,
+        ),
+        CustomButtom(
+          onPressed: () {},
+          buttonText: "Save",
+          color: Theme.of(context).accentColor,
+          textColor: Colors.white,
+        )
+      ],
     );
   }
 }

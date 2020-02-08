@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/widgets/custom_button.dart';
+import 'package:todo_app/widgets/custom_textfield.dart';
 
 class AddEventPage extends StatefulWidget {
   @override
@@ -6,6 +8,29 @@ class AddEventPage extends StatefulWidget {
 }
 
 class _AddEventPageState extends State<AddEventPage> {
+  String _selectedDate = 'pick date';
+  String _selectedTime = 'pick time';
+  Future _pickDate() async {
+    DateTime datepick = await showDatePicker(
+      context: context,
+      initialDate: new DateTime.now(),
+      firstDate: new DateTime.now().add(Duration(days: -365)),
+      lastDate: new DateTime.now().add(Duration(days: 365)),
+    );
+    if (datepick != null) setState(() => _selectedDate = datepick.toString());
+  }
+
+  Future _pickTime() async {
+    TimeOfDay timepick = await showTimePicker(
+      context: context,
+      initialTime: new TimeOfDay.now(),
+    );
+    if (timepick != null)
+      setState(() {
+        _selectedTime = timepick.toString();
+      });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -22,17 +47,61 @@ class _AddEventPageState extends State<AddEventPage> {
           SizedBox(
             height: 24,
           ),
-          TextField(
-            decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(12),
-                  ),
-                ),
-                labelText: "Enter event name"),
+          CustomTextField(labelText: "Enter event name"),
+          SizedBox(
+            height: 12,
           ),
+          CustomTextField(labelText: "Enter description"),
+          SizedBox(
+            height: 12,
+          ),
+          _dateTimePicker(Icons.date_range, _pickDate, _selectedDate),
+          _dateTimePicker(Icons.access_time, _pickTime, _selectedTime),
+          SizedBox(
+            height: 24,
+          ),
+          _actionButtom(context),
         ],
       ),
+    );
+  }
+
+  Widget _dateTimePicker(IconData icon, VoidCallback onPressed, String value) {
+    return FlatButton(
+      padding: EdgeInsets.zero,
+      onPressed: onPressed,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 12.0),
+        child: Row(
+          children: <Widget>[
+            Icon(icon, color: Theme.of(context).accentColor, size: 30),
+            SizedBox(width: 12),
+            Text(value, style: TextStyle(fontSize: 14)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Row _actionButtom(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        CustomButtom(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          textColor: Theme.of(context).accentColor,
+          buttonText: "Cancel",
+          color: Colors.white,
+        ),
+        CustomButtom(
+          onPressed: () {},
+          textColor: Colors.white,
+          color: Theme.of(context).accentColor,
+          buttonText: "Save",
+        )
+      ],
     );
   }
 }
