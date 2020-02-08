@@ -16,7 +16,7 @@ class Event {
   const Event(this.time, this.task, this.description, this.isFinish);
 }
 
-final List<Event> _event_list = [
+final List<Event> _eventList = [
   new Event("08:00", "Have coffee with Sam", "Personal", false),
   new Event("09:00", "Meet with sales", "Personal", true),
   new Event("10:00", "Call about the appointment", "Personal", false),
@@ -31,17 +31,17 @@ class _EventPageState extends State<EventPage> {
     double iconSize = 20;
 
     return ListView.builder(
-      itemCount: _event_list.length,
+      itemCount: _eventList.length,
       padding: const EdgeInsets.all(0),
       itemBuilder: (context, index) {
         return Padding(
           padding: const EdgeInsets.only(left: 24.0, right: 24.0),
           child: Row(
             children: <Widget>[
-              _lineStyle(context, iconSize, index, _event_list.length,
-                  _event_list[index].isFinish),
-              _displayTime(_event_list[index].time),
-              _displayContent(_event_list[index]),
+              _lineStyle(context, iconSize, index, _eventList.length,
+                  _eventList[index].isFinish),
+              _displayTime(_eventList[index].time),
+              _displayContent(_eventList[index]),
             ],
           ),
         );
