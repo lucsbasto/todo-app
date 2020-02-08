@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/pages/add_event_page.dart';
 import 'package:todo_app/pages/add_task_page.dart';
 import 'package:todo_app/pages/event_page.dart';
 import 'package:todo_app/pages/task_page.dart';
@@ -48,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
             context: context,
             builder: (BuildContext context) {
               return Dialog(
-                child: AddTaskPage(),
+                child: AddEventPage(),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(12),
