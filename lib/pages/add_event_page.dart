@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/widgets/custom_button.dart';
 import 'package:todo_app/widgets/custom_modal_action_button.dart';
 import 'package:todo_app/widgets/custom_textfield.dart';
 
