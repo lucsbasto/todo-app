@@ -398,7 +398,8 @@ abstract class _$Database extends GeneratedDatabase {
   }
 
   Selectable<TodoData> _getByTypeQuery(int var1) {
-    return customSelectQuery('SELECT * FROM todo WHERE todo_type = ?',
+    return customSelectQuery(
+        'SELECT * FROM todo WHERE todo_type = ? ORDER BY is_finish, date, time',
         variables: [Variable.withInt(var1)],
         readsFrom: {todo}).map(_rowToTodoData);
   }

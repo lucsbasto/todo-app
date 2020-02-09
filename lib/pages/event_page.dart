@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_app/models/database.dart';
 import 'package:todo_app/widgets/custom_icon_decoration.dart';
+import 'package:todo_app/models/todo.dart';
 
 class EventPage extends StatefulWidget {
   @override
@@ -26,30 +29,37 @@ final List<Event> _eventList = [
 ];
 
 class _EventPageState extends State<EventPage> {
+  Database provider;
+
   @override
   Widget build(BuildContext context) {
     double iconSize = 20;
-
-    return ListView.builder(
-      itemCount: _eventList.length,
-      padding: const EdgeInsets.all(0),
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.only(left: 24.0, right: 24.0),
-          child: Row(
-            children: <Widget>[
-              _lineStyle(context, iconSize, index, _eventList.length,
-                  _eventList[index].isFinish),
-              _displayTime(_eventList[index].time),
-              _displayContent(_eventList[index]),
-            ],
-          ),
-        );
-      },
-    );
+    provider = Provider.of<Database>(context);
+    return StreamProvider.value(
+        value: provider.getTodoByType(TodoType.TYPE_TASK.index),
+        child: Consumer<List<TodoData>>(builder: (context, _datalist, child) {
+          return _datalist == null
+              ? CircularProgressIndicator()
+              : ListView.builder(
+                  itemCount: _datalist.length,
+                  padding: const EdgeInsets.all(0),
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+                      child: Row(
+                        children: <Widget>[
+                          _lineStyle(context, iconSize, index, _datalist.length,
+                              _datalist[index].isFinish),
+                          _displayTime(_datalist[index].time),
+                          _displayContent(_datalist[index]),
+                        ],
+                      ),
+                    );
+                  });
+        }));
   }
 
-  Expanded _displayContent(Event event) {
+  Expanded _displayContent(TodoData event) {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
@@ -78,12 +88,12 @@ class _EventPageState extends State<EventPage> {
     );
   }
 
-  Container _displayTime(String time) {
+  Container _displayTime(DateTime time) {
     return Container(
       width: 80,
       child: Padding(
         padding: const EdgeInsets.only(left: 8.0),
-        child: Container(child: Text(time)),
+        child: Container(child: Text(time.toString())),
       ),
     );
   }
