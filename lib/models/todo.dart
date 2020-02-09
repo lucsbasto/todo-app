@@ -5,6 +5,7 @@ class Todo extends Table {
   DateTimeColumn get date => dateTime()();
   DateTimeColumn get time => dateTime()();
   TextColumn get task => text()();
+  TextColumn get description => text()();
   BoolColumn get isFinish => boolean()();
   IntColumn get todoType => integer()();
 }

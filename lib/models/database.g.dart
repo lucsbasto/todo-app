@@ -12,6 +12,7 @@ class TodoData extends DataClass implements Insertable<TodoData> {
   final DateTime date;
   final DateTime time;
   final String task;
+  final String description;
   final bool isFinish;
   final int todoType;
   TodoData(
@@ -19,6 +20,7 @@ class TodoData extends DataClass implements Insertable<TodoData> {
       @required this.date,
       @required this.time,
       @required this.task,
+      @required this.description,
       @required this.isFinish,
       @required this.todoType});
   factory TodoData.fromData(Map<String, dynamic> data, GeneratedDatabase db,
@@ -35,6 +37,8 @@ class TodoData extends DataClass implements Insertable<TodoData> {
       time:
           dateTimeType.mapFromDatabaseResponse(data['${effectivePrefix}time']),
       task: stringType.mapFromDatabaseResponse(data['${effectivePrefix}task']),
+      description: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}description']),
       isFinish:
           boolType.mapFromDatabaseResponse(data['${effectivePrefix}is_finish']),
       todoType:
@@ -48,6 +52,7 @@ class TodoData extends DataClass implements Insertable<TodoData> {
       date: serializer.fromJson<DateTime>(json['date']),
       time: serializer.fromJson<DateTime>(json['time']),
       task: serializer.fromJson<String>(json['task']),
+      description: serializer.fromJson<String>(json['description']),
       isFinish: serializer.fromJson<bool>(json['isFinish']),
       todoType: serializer.fromJson<int>(json['todoType']),
     );
@@ -60,6 +65,7 @@ class TodoData extends DataClass implements Insertable<TodoData> {
       'date': serializer.toJson<DateTime>(date),
       'time': serializer.toJson<DateTime>(time),
       'task': serializer.toJson<String>(task),
+      'description': serializer.toJson<String>(description),
       'isFinish': serializer.toJson<bool>(isFinish),
       'todoType': serializer.toJson<int>(todoType),
     };
@@ -72,6 +78,9 @@ class TodoData extends DataClass implements Insertable<TodoData> {
       date: date == null && nullToAbsent ? const Value.absent() : Value(date),
       time: time == null && nullToAbsent ? const Value.absent() : Value(time),
       task: task == null && nullToAbsent ? const Value.absent() : Value(task),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
       isFinish: isFinish == null && nullToAbsent
           ? const Value.absent()
           : Value(isFinish),
@@ -86,6 +95,7 @@ class TodoData extends DataClass implements Insertable<TodoData> {
           DateTime date,
           DateTime time,
           String task,
+          String description,
           bool isFinish,
           int todoType}) =>
       TodoData(
@@ -93,6 +103,7 @@ class TodoData extends DataClass implements Insertable<TodoData> {
         date: date ?? this.date,
         time: time ?? this.time,
         task: task ?? this.task,
+        description: description ?? this.description,
         isFinish: isFinish ?? this.isFinish,
         todoType: todoType ?? this.todoType,
       );
@@ -103,6 +114,7 @@ class TodoData extends DataClass implements Insertable<TodoData> {
           ..write('date: $date, ')
           ..write('time: $time, ')
           ..write('task: $task, ')
+          ..write('description: $description, ')
           ..write('isFinish: $isFinish, ')
           ..write('todoType: $todoType')
           ..write(')'))
@@ -116,8 +128,10 @@ class TodoData extends DataClass implements Insertable<TodoData> {
           date.hashCode,
           $mrjc(
               time.hashCode,
-              $mrjc(task.hashCode,
-                  $mrjc(isFinish.hashCode, todoType.hashCode))))));
+              $mrjc(
+                  task.hashCode,
+                  $mrjc(description.hashCode,
+                      $mrjc(isFinish.hashCode, todoType.hashCode)))))));
   @override
   bool operator ==(other) =>
       identical(this, other) ||
@@ -126,6 +140,7 @@ class TodoData extends DataClass implements Insertable<TodoData> {
           other.date == this.date &&
           other.time == this.time &&
           other.task == this.task &&
+          other.description == this.description &&
           other.isFinish == this.isFinish &&
           other.todoType == this.todoType);
 }
@@ -135,6 +150,7 @@ class TodoCompanion extends UpdateCompanion<TodoData> {
   final Value<DateTime> date;
   final Value<DateTime> time;
   final Value<String> task;
+  final Value<String> description;
   final Value<bool> isFinish;
   final Value<int> todoType;
   const TodoCompanion({
@@ -142,6 +158,7 @@ class TodoCompanion extends UpdateCompanion<TodoData> {
     this.date = const Value.absent(),
     this.time = const Value.absent(),
     this.task = const Value.absent(),
+    this.description = const Value.absent(),
     this.isFinish = const Value.absent(),
     this.todoType = const Value.absent(),
   });
@@ -150,11 +167,13 @@ class TodoCompanion extends UpdateCompanion<TodoData> {
     @required DateTime date,
     @required DateTime time,
     @required String task,
+    @required String description,
     @required bool isFinish,
     @required int todoType,
   })  : date = Value(date),
         time = Value(time),
         task = Value(task),
+        description = Value(description),
         isFinish = Value(isFinish),
         todoType = Value(todoType);
   TodoCompanion copyWith(
@@ -162,6 +181,7 @@ class TodoCompanion extends UpdateCompanion<TodoData> {
       Value<DateTime> date,
       Value<DateTime> time,
       Value<String> task,
+      Value<String> description,
       Value<bool> isFinish,
       Value<int> todoType}) {
     return TodoCompanion(
@@ -169,6 +189,7 @@ class TodoCompanion extends UpdateCompanion<TodoData> {
       date: date ?? this.date,
       time: time ?? this.time,
       task: task ?? this.task,
+      description: description ?? this.description,
       isFinish: isFinish ?? this.isFinish,
       todoType: todoType ?? this.todoType,
     );
@@ -224,6 +245,20 @@ class $TodoTable extends Todo with TableInfo<$TodoTable, TodoData> {
     );
   }
 
+  final VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  GeneratedTextColumn _description;
+  @override
+  GeneratedTextColumn get description =>
+      _description ??= _constructDescription();
+  GeneratedTextColumn _constructDescription() {
+    return GeneratedTextColumn(
+      'description',
+      $tableName,
+      false,
+    );
+  }
+
   final VerificationMeta _isFinishMeta = const VerificationMeta('isFinish');
   GeneratedBoolColumn _isFinish;
   @override
@@ -250,7 +285,7 @@ class $TodoTable extends Todo with TableInfo<$TodoTable, TodoData> {
 
   @override
   List<GeneratedColumn> get $columns =>
-      [id, date, time, task, isFinish, todoType];
+      [id, date, time, task, description, isFinish, todoType];
   @override
   $TodoTable get asDslTable => this;
   @override
@@ -283,6 +318,12 @@ class $TodoTable extends Todo with TableInfo<$TodoTable, TodoData> {
           _taskMeta, task.isAcceptableValue(d.task.value, _taskMeta));
     } else if (task.isRequired && isInserting) {
       context.missing(_taskMeta);
+    }
+    if (d.description.present) {
+      context.handle(_descriptionMeta,
+          description.isAcceptableValue(d.description.value, _descriptionMeta));
+    } else if (description.isRequired && isInserting) {
+      context.missing(_descriptionMeta);
     }
     if (d.isFinish.present) {
       context.handle(_isFinishMeta,
@@ -322,6 +363,9 @@ class $TodoTable extends Todo with TableInfo<$TodoTable, TodoData> {
     if (d.task.present) {
       map['task'] = Variable<String, StringType>(d.task.value);
     }
+    if (d.description.present) {
+      map['description'] = Variable<String, StringType>(d.description.value);
+    }
     if (d.isFinish.present) {
       map['is_finish'] = Variable<bool, BoolType>(d.isFinish.value);
     }
@@ -347,6 +391,7 @@ abstract class _$Database extends GeneratedDatabase {
       date: row.readDateTime('date'),
       time: row.readDateTime('time'),
       task: row.readString('task'),
+      description: row.readString('description'),
       isFinish: row.readBool('is_finish'),
       todoType: row.readInt('todo_type'),
     );
