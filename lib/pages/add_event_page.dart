@@ -76,10 +76,10 @@ class _AddEventPageState extends State<AddEventPage> {
           CustomDateTimePicker(
             icon: Icons.access_time,
             onPressed: _pickTime,
-            value: _selectedTime.toString(),
+            value: "${_selectedTime.hour}:${_selectedTime.minute}",
           ),
           SizedBox(
-            height: 24,
+            height: 12,
           ),
           CustomModalActionButton(
             onClose: () {
