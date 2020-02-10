@@ -168,7 +168,7 @@ class _EventPageState extends State<EventPage> {
   Widget _dialogButton(TodoData event, String _text) {
     return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
       Text(
-        "${_text} Event",
+        _text + " Event",
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
       ),
       SizedBox(
