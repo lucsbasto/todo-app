@@ -13,10 +13,13 @@ class AddEventPage extends StatefulWidget {
 }
 
 class _AddEventPageState extends State<AddEventPage> {
+  final _formKey = new GlobalKey<FormState>();
+
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedTime = TimeOfDay.now();
   TextEditingController _eventNameController = TextEditingController();
   TextEditingController _eventDescriptionController = TextEditingController();
+
   Future _pickDate() async {
     DateTime datepick = await showDatePicker(
       context: context,
@@ -34,79 +37,81 @@ class _AddEventPageState extends State<AddEventPage> {
     );
     if (timepick != null)
       setState(() {
-        _selectedTime = timepick;
+        _selectedTime = TimeOfDay(hour: timepick.hour, minute: timepick.minute);
       });
   }
 
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<Database>(context);
-    return Padding(
+    return Container(
       padding: const EdgeInsets.all(24.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Center(
-            child: Text(
-              "Add new event",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Center(
+              child: Text(
+                "Add new event",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
             ),
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          CustomTextField(
-            labelText: "Enter event name",
-            controller: _eventNameController,
-          ),
-          SizedBox(
-            height: 12,
-          ),
-          CustomTextField(
-            labelText: "Enter description",
-            controller: _eventDescriptionController,
-          ),
-          SizedBox(
-            height: 12,
-          ),
-          CustomDateTimePicker(
-              icon: Icons.date_range,
-              onPressed: _pickDate,
-              value: DateFormat('dd-MM-yyyy').format(_selectedDate)),
-          CustomDateTimePicker(
-            icon: Icons.access_time,
-            onPressed: _pickTime,
-            value: "${_selectedTime.hour}:${_selectedTime.minute}",
-          ),
-          SizedBox(
-            height: 12,
-          ),
-          CustomModalActionButton(
-            onClose: () {
-              Navigator.of(context).pop();
-            },
-            onSave: () {
-              if (_eventNameController.text != "" &&
-                  _eventDescriptionController.text != "") {
-                provider
-                    .insertTodoEntries(new TodoData(
-                        date: _selectedDate,
-                        time: new DateTime(
-                            _selectedDate.year,
-                            _selectedDate.month,
-                            _selectedDate.day,
-                            _selectedTime.hour,
-                            _selectedTime.minute),
-                        isFinish: false,
-                        task: _eventNameController.text,
-                        description: _eventDescriptionController.text,
-                        todoType: TodoType.TYPE_TASK.index,
-                        id: null))
-                    .whenComplete(Navigator.of(context).pop);
-              }
-            },
-          ),
-        ],
+            SizedBox(
+              height: 24,
+            ),
+            CustomTextField(
+              labelText: "Enter event name",
+              controller: _eventNameController,
+            ),
+            SizedBox(
+              height: 12,
+            ),
+            CustomTextField(
+              labelText: "Enter description",
+              controller: _eventDescriptionController,
+            ),
+            SizedBox(
+              height: 12,
+            ),
+            CustomDateTimePicker(
+                icon: Icons.date_range,
+                onPressed: _pickDate,
+                value: DateFormat('dd-MM-yyyy').format(_selectedDate)),
+            CustomDateTimePicker(
+              icon: Icons.access_time,
+              onPressed: _pickTime,
+              value: "${_selectedTime.hour}:${_selectedTime.minute}",
+            ),
+            SizedBox(
+              height: 12,
+            ),
+            CustomModalActionButton(
+              onClose: () {
+                Navigator.of(context).pop();
+              },
+              onSave: () {
+                if (_eventNameController.text != "" &&
+                    _eventDescriptionController.text != "") {
+                  provider
+                      .insertTodoEntries(new TodoData(
+                          date: _selectedDate,
+                          time: new DateTime(
+                              _selectedDate.year,
+                              _selectedDate.month,
+                              _selectedDate.day,
+                              _selectedTime.hour,
+                              _selectedTime.minute),
+                          isFinish: false,
+                          task: _eventNameController.text,
+                          description: _eventDescriptionController.text,
+                          todoType: TodoType.TYPE_TASK.index,
+                          id: null))
+                      .whenComplete(Navigator.of(context).pop);
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
