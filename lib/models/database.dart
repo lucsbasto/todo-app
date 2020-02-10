@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:todo_app/models/todo.dart';
 import 'package:flutter/src/foundation/change_notifier.dart';
@@ -22,13 +23,26 @@ class Database extends _$Database with ChangeNotifier {
   @override
   int get schemaVersion => 1;
 
-  Stream<List<TodoData>> getTodoByType(int type) => _watchGetByType(type);
+  // Stream<List<TodoData>> getTodoByType(int type) => _watchGetByType(type);
+  Stream<List<TodoData>> getTodoOrderBy(int type) {
+    if (type == 0) {
+      return (select(todo)
+            ..where((t) => t.todoType.equals(type))
+            ..orderBy([(t) => OrderingTerm(expression: t.isFinish)]))
+          .watch();
+    } else {
+      return (select(todo)
+            ..where((t) => t.todoType.equals(type))
+            ..orderBy([(t) => OrderingTerm(expression: t.time)]))
+          .watch();
+    }
+  }
 
   Future insertTodoEntries(TodoData entry) {
     return into(todo).insert(entry);
   }
 
-  Future deleteTodoEntrie(int id) {
+  Future deleteTodoEntries(int id) {
     return _deleteTask(id);
   }
 

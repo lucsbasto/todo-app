@@ -76,10 +76,7 @@ class _AddEventPageState extends State<AddEventPage> {
           CustomDateTimePicker(
             icon: Icons.access_time,
             onPressed: _pickTime,
-            //TimeOfDay(hour: _timePicked.hour, minute: _timePicked.minute)
-            value: TimeOfDay(
-                    hour: _selectedTime.hour, minute: _selectedTime.minute)
-                .toString(),
+            value: _selectedTime.toString(),
           ),
           SizedBox(
             height: 24,
@@ -94,7 +91,12 @@ class _AddEventPageState extends State<AddEventPage> {
                 provider
                     .insertTodoEntries(new TodoData(
                         date: _selectedDate,
-                        time: _selectedTime,
+                        time: new DateTime(
+                            _selectedDate.year,
+                            _selectedDate.month,
+                            _selectedDate.day,
+                            _selectedTime.hour,
+                            _selectedTime.minute),
                         isFinish: false,
                         task: _eventNameController.text,
                         description: _eventDescriptionController.text,
@@ -102,27 +104,9 @@ class _AddEventPageState extends State<AddEventPage> {
                         id: null))
                     .whenComplete(Navigator.of(context).pop);
               }
-              print("a0");
             },
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _dateTimePicker(IconData icon, VoidCallback onPressed, String value) {
-    return FlatButton(
-      padding: EdgeInsets.zero,
-      onPressed: onPressed,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 12.0),
-        child: Row(
-          children: <Widget>[
-            Icon(icon, color: Theme.of(context).accentColor, size: 30),
-            SizedBox(width: 12),
-            Text(value, style: TextStyle(fontSize: 14)),
-          ],
-        ),
       ),
     );
   }

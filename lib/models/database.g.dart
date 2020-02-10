@@ -46,7 +46,8 @@ class TodoData extends DataClass implements Insertable<TodoData> {
     );
   }
   factory TodoData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
     return TodoData(
       id: serializer.fromJson<int>(json['id']),
       date: serializer.fromJson<DateTime>(json['date']),
@@ -58,9 +59,9 @@ class TodoData extends DataClass implements Insertable<TodoData> {
     );
   }
   @override
-  Map<String, dynamic> toJson(
-      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
-    return {
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'date': serializer.toJson<DateTime>(date),
       'time': serializer.toJson<DateTime>(time),
@@ -133,7 +134,7 @@ class TodoData extends DataClass implements Insertable<TodoData> {
                   $mrjc(description.hashCode,
                       $mrjc(isFinish.hashCode, todoType.hashCode)))))));
   @override
-  bool operator ==(other) =>
+  bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is TodoData &&
           other.id == this.id &&
@@ -298,43 +299,41 @@ class $TodoTable extends Todo with TableInfo<$TodoTable, TodoData> {
     final context = VerificationContext();
     if (d.id.present) {
       context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
-    } else if (id.isRequired && isInserting) {
-      context.missing(_idMeta);
     }
     if (d.date.present) {
       context.handle(
           _dateMeta, date.isAcceptableValue(d.date.value, _dateMeta));
-    } else if (date.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_dateMeta);
     }
     if (d.time.present) {
       context.handle(
           _timeMeta, time.isAcceptableValue(d.time.value, _timeMeta));
-    } else if (time.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_timeMeta);
     }
     if (d.task.present) {
       context.handle(
           _taskMeta, task.isAcceptableValue(d.task.value, _taskMeta));
-    } else if (task.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_taskMeta);
     }
     if (d.description.present) {
       context.handle(_descriptionMeta,
           description.isAcceptableValue(d.description.value, _descriptionMeta));
-    } else if (description.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_descriptionMeta);
     }
     if (d.isFinish.present) {
       context.handle(_isFinishMeta,
           isFinish.isAcceptableValue(d.isFinish.value, _isFinishMeta));
-    } else if (isFinish.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_isFinishMeta);
     }
     if (d.todoType.present) {
       context.handle(_todoTypeMeta,
           todoType.isAcceptableValue(d.todoType.value, _todoTypeMeta));
-    } else if (todoType.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_todoTypeMeta);
     }
     return context;
@@ -429,5 +428,7 @@ abstract class _$Database extends GeneratedDatabase {
   }
 
   @override
-  List<TableInfo> get allTables => [todo];
+  Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
+  @override
+  List<DatabaseSchemaEntity> get allSchemaEntities => [todo];
 }

@@ -18,7 +18,7 @@ class _TaskPageState extends State<TaskPage> {
   Widget build(BuildContext context) {
     provider = Provider.of<Database>(context);
     return StreamProvider.value(
-      value: provider.getTodoByType(TodoType.TYPE_TASK.index),
+      value: provider.getTodoOrderBy(TodoType.TYPE_TASK.index),
       child: Consumer<List<TodoData>>(
         builder: (context, _dataList, child) {
           return _dataList == null
@@ -126,7 +126,7 @@ class _TaskPageState extends State<TaskPage> {
                     CustomButtom(
                       onPressed: () {
                         provider
-                            .deleteTodoEntrie(task.id)
+                            .deleteTodoEntries(task.id)
                             .whenComplete(Navigator.of(context).pop);
                       },
                       buttonText: "Delete",
@@ -197,7 +197,7 @@ class _TaskPageState extends State<TaskPage> {
                     CustomButtom(
                       onPressed: () {
                         provider
-                            .deleteTodoEntrie(task.id)
+                            .deleteTodoEntries(task.id)
                             .whenComplete(Navigator.of(context).pop);
                       },
                       buttonText: "Delete",
